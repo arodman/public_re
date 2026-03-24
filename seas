@@ -1,0 +1,948 @@
+### 001_top <a id="title_page"></a>
+- [Top](#table_contents)
+
+to do:
+add: Cal;cualte the REMSE OF THE last 12 months and the last 6  mnth s and alst 3 motnhs 
+add graph for each
+covner bakc to idnex
+
+• Model Diagnostics: Check the model residuals for: 
+	• Normality: Residuals should be normally distributed.
+	• No Autocorrelation: Residuals should not be autocorrelated. Use the Ljung-Box test or Durbin-Watson test.
+Homoscedasticity: Residuals should have constant variance.![image.png](attachment:02d7a74f-3b0b-48fd-acf4-b239872f6035.png)![image.png](attachment:65e7bbbc-6c13-4f8b-b611-595d1fc3e51b.png)![image.png](attachment:0f2ede74-0d27-487c-97b7-1b1b31dbb730.png)
+
+ Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), and Mean Absolute Percentage Error (MAPE)
+
+### 001_steps  <a id="title_page"></a>
+
+#SARIMA (Seasonal AutoRegressive Integrated Moving Average),
+
+# load
+# transofr data (differnceing)
+#apply unit root model first
+
+### 001_packages  <a id="title_page"></a>
+- [Top](#table_contents)
+
+owner="[ARM]"
+###econiomics DASHBOARD
+import warnings
+warnings.filterwarnings("ignore")
+warnings.filterwarnings('ignore')
+from IPython.display import display, HTML
+import Haver
+Haver.path(Haver.direct(1))    
+import pandas as pd
+import numpy as np
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+%matplotlib inline
+import os
+def clear():
+    os.system('cls')
+# then you can clear the window with:
+from matplotlib.dates import date2num
+import os
+os.chdir('C:/database/data/inflation/')
+#C:\database\dashboard
+print(os.getcwd())
+
+import matplotlib.pyplot as plt
+from matplotlib.collections import LineCollection
+import matplotlib.ticker as plticker
+import matplotlib.dates as mdates
+from matplotlib.ticker import MultipleLocator
+# Import warnings
+import warnings
+warnings.filterwarnings("ignore")
+import seaborn as sns
+
+from matplotlib.colors import LinearSegmentedColormap
+
+import matplotlib.pyplot as pit
+from PIL import Image
+import time
+import seaborn as sns
+import plotly.graph_objects as go
+import matplotlib.dates as mdates
+from statsmodels.tsa.stattools import adfuller
+import calendar
+
+### 000 parameters  <a id="title_page"></a>
+
+list_y0=[0]
+y_start0 = ['2005']
+y_end0 =['2030']
+list_y1=[0,1]
+y_start1 =['2005','2020']
+y_end1= ['2030', '2030']
+list_y2=[0,1,2]
+y_start2 =['2005', '2018', '2020']
+y_end2 = ['2030', '2030', '2030']
+list_y3=[0,1,2,3]
+y_start3 = ['2005', '2013', '2018', '2020']
+y_end3 = ['2030', '2030', '2030', '2030']
+list_y4=[0]
+y_start4 = [2015]
+y_end4 = [2030]
+list_y5=[5,6,7,8]
+y_start5 = ['2015', '2018', '2020','2022']
+y_end5 = ['2030', '2030', '2030','2030']
+
+p_sarima_tail0=120
+
+time_windows0 = [(pd.Timestamp('2015-01-01'), pd.Timestamp('2030-12-31')),
+                (pd.Timestamp('2018-01-01'), pd.Timestamp('2030-12-31')),
+                (pd.Timestamp('2020-01-01'), pd.Timestamp('2030-12-31')),
+               (pd.Timestamp('2022-01-01'), pd.Timestamp('2030-12-31')),
+               
+               ]
+
+### 001_data load dataframe <a id="title_page"></a>
+- [Top](#table_contents)
+
+
+table_h=pd.read_parquet('table_h_index_coicop5p.parquet') 
+print(table_h.shape[0])
+print(table_h.shape[1])
+table_h = table_h[table_h.index >= '2010-01-01'] 
+print(table_h.index.min())
+print(table_h.index.max())
+#table_w = pd.read_parquet('table_w_weight_gc.parquet') 
+#sanalysis_v= pd.read_parquet('sanalysis_v.parquet') 
+#sanalysis_m= pd.read_parquet('sanalysis_m.parquet') 
+table_h.columns = [col.split('_',1)[1] if '_' in col else col for col in table_h.columns]
+
+
+
+### core graph
+#print(table_h.tail(5))
+#table_h_core
+print(table_h.head(1))
+
+### 001_data load  lists<a id="title_page"></a>
+- [Top](#table_contents)
+
+import pickle
+
+import pickle
+with open("forecast_month.pkl", "rb") as file: 
+    forecast_month = pickle.load(file)
+print("forecast_month")
+print(forecast_month)
+
+with open("list_cloth0.pkl", "rb") as file: 
+    list_cloth0 = pickle.load(file)
+with open("list_housing0.pkl", "rb") as file: 
+    list_housing0 = pickle.load(file)
+with open("list_furnit0.pkl", "rb") as file: 
+    list_furnit0 = pickle.load(file)
+with open("list_health0.pkl", "rb") as file: 
+    list_health0 = pickle.load(file)    
+with open("list_transport0.pkl", "rb") as file: 
+    list_transport0 = pickle.load(file)    
+with open("list_comm0.pkl", "rb") as file: 
+    list_comm0 = pickle.load(file)
+with open("list_rec0.pkl", "rb") as file: 
+    list_rec0 = pickle.load(file)
+with open("list_educ0.pkl", "rb") as file: 
+    list_educ0 = pickle.load(file)
+with open("list_hotel0.pkl", "rb") as file: 
+    list_hotel0 = pickle.load(file)
+with open("list_misc0.pkl", "rb") as file: 
+    list_misc0 = pickle.load(file)
+#with open("list_water0.pkl", "rb") as file: 
+#    list_water0 = pickle.load(file)
+
+core_list = (list_cloth0 + 
+             list_housing0 + 
+             list_furnit0 + 
+             list_health0 + 
+             list_transport0 + 
+             list_comm0 + 
+             list_rec0 + 
+             list_educ0 + 
+             list_hotel0 + 
+             list_misc0 )
+
+#### For processing purposes
+core_list = (list_cloth0  )
+
+print(core_list)
+#core_list = (list_cloth + 
+#list_housing + 
+#             list_furnit + 
+#             list_health + 
+#             list_transport + 
+#             list_comm + 
+#             list_rec + 
+#             list_educ + 
+#             list_hotel + 
+#             list_misc + 
+#             list_water)
+
+### 001_data prcoessing  lists<a id="title_page"></a>
+- [Top](#table_contents)
+
+table_hc= table_h.copy()
+table_hc=table_hc[core_list]
+max_index_df_hc = table_hc.index.max()
+
+
+### 001_data prcoessing yy  lists<a id="title_page"></a>
+
+table_hc_yy=table_hc.copy()
+table_hc_yy= table_hc_yy.pct_change(periods=12, fill_method="bfill").multiply(100).round(8)
+table_hc_yy=table_hc_yy.dropna()
+print(table_hc_yy.shape[0])
+print(table_hc_yy.shape[1])
+print(table_hc_yy.index.min())
+print(table_hc_yy.index.max())
+
+### 001_data prcoessing regular differenceing  lists<a id="title_page"></a>
+
+
+# Apply regular differencing (lag 1)
+table_hc_diff=table_hc.copy()
+table_hc_diff = table_hc_diff.diff().dropna()
+print(table_hc_diff.shape[0])
+print(table_hc_diff.shape[1])
+print(table_hc_diff.index.min())
+print(table_hc_diff.index.max())
+
+
+#Differencing to Remove Trends: Differencing is a technique used to make a non-stationary 
+#time series stationary by calculating the difference between consecutive observations. 
+#this effectively removes the trend component
+
+#How Differencing Works:
+#First-order differencing: y'[t] = y[t] - y[t-1], where y[t] is the value at time t. This is usually sufficient to remove linear trends.
+#Second-order differencing: If the first-order differencing doesn't remove the trend (e.g., if the trend is quadratic), 
+#you can apply differencing again: y''[t] = y'[t] - y'[t-1].
+#differenced data no longer has the upward trend of the original index.
+
+### 001_data prcoessing seasonal  differenceing  lists<a id="title_page"></a>
+
+#Seasonal Differencing (Seasonality Removal): If there's clear seasonality (e.g., repeating patterns every 12 months for monthly data), apply seasonal differencing.
+table_hc_seas_diff=table_hc.copy()
+table_hc_seas_diff = table_hc_seas_diff.diff(12).dropna() #Seasonal difference of 12 for monthly data
+print(table_hc_seas_diff.shape[0])
+print(table_hc_seas_diff.shape[1])
+print(table_hc_seas_diff.index.min())
+print(table_hc_seas_diff.index.max())
+
+# Transformations:
+
+#Log transformation: If the variance of your time series is not constant (heteroscedasticity), 
+#a log transformation can help stabilize it. This is often useful when the magnitude of the fluctuations increases 
+#with the level of the series. Apply the log transformation before differencing.   
+#Box-Cox transformation: A more general transformation that can handle various types of non-constant variance. 
+#It includes the log transformation as a special case. Again, apply this before differencing.
+
+#table_hc_diff.to_clipboard()
+
+### 001_data prcoessing stationary test  lists<a id="title_page"></a>
+
+
+#Test for stationarity: Use the ADF or KPSS test.
+
+time_windows=time_windows0
+
+results_df = pd.DataFrame()  # Initialize the results DataFrame
+df= table_hc_diff.copy()
+for i, (start_date, end_date) in enumerate(time_windows):
+    # 1. Filter the DataFrame for the current time window
+    filtered_df = df[(df.index >= start_date) & (df.index <= end_date)]
+    print(filtered_df.index.min())
+    # 2. Loop through each column (financial component)
+    for column in filtered_df.columns:
+        # 3. Perform the Augmented Dickey-Fuller test
+        adf_result = adfuller(filtered_df[column])
+
+        # 4. Store the results in the results DataFrame
+        results_df.loc[column, f'ADF Statistic_Window{i+1}'] = adf_result[0]
+        results_df.loc[column, f'p-value_Window{i+1}'] = adf_result[1]
+
+for i, (start_date, end_date) in enumerate(time_windows):
+    results_df[f'Stationary Window{i+1}'] = results_df[f'p-value_Window{i+1}'].apply(lambda p: "Yes" if p < 0.05 else "No")
+
+
+table_hc_diff_results_df=results_df.copy()
+
+#print(results_df)
+#results_df.to_clipboard()
+
+time_windows=time_windows0
+
+results_df = pd.DataFrame()  # Initialize the results DataFrame
+df= table_hc_seas_diff.copy()
+for i, (start_date, end_date) in enumerate(time_windows):
+    # 1. Filter the DataFrame for the current time window
+    filtered_df = df[(df.index >= start_date) & (df.index <= end_date)]
+    print(filtered_df.index.min())
+    # 2. Loop through each column (financial component)
+    for column in filtered_df.columns:
+        # 3. Perform the Augmented Dickey-Fuller test
+        adf_result = adfuller(filtered_df[column])
+
+        # 4. Store the results in the results DataFrame
+        results_df.loc[column, f'ADF Statistic_Window{i+1}'] = adf_result[0]
+        results_df.loc[column, f'p-value_Window{i+1}'] = adf_result[1]
+
+for i, (start_date, end_date) in enumerate(time_windows):
+    results_df[f'Stationary Window{i+1}'] = results_df[f'p-value_Window{i+1}'].apply(lambda p: "Yes" if p < 0.05 else "No")
+
+
+table_hc_seas_diff_results_df=results_df.copy()
+### save resutls as parquet
+### save resutls with dateimte of testing
+
+del results_df
+
+#print(table_hc_seas_diff_results_df)
+#table_hc_seas_diff_results_df.to_clipboard()
+
+stop1
+
+### 001_data sarima tuning <a id="title_page"></a
+
+
+
+#Customizable Parameters in the SARIMA Model
+#The following parameters can be customized in the SARIMA model:
+
+#p: The number of lag observations included in the model (AR order).
+#d: The number of times that the raw observations are differenced (I order).
+#q: The size of the moving average window (MA order).
+#P: The number of lag observations included in the seasonal model (Seasonal AR order).
+#D: The number of times that the raw seasonal observations are differenced (Seasonal I order).
+#Q: The size of the moving average window in the seasonal model (Seasonal MA order).
+#s: The number of observations per season (seasonal period).
+
+
+# Define hyperparameter ranges
+#p = d = q = range(0, 3)
+#P = D = Q = range(0, 3)
+#s = [12]  # Seasonality (monthly data)
+#param_combinations = list(product(p, d, q, P, D, Q, s))
+
+
+
+##>>> apply 2 versions, 1 with autorima
+# 1 with autorima
+# 2 with sarimax but running grid search 
+
+#!pip install pmdarima
+
+### 001_data sarima version 1  autoarima stepwise <a id="title_page"></a
+
+import pandas as pd
+import numpy as np
+from pmdarima import auto_arima
+from sklearn.metrics import mean_squared_error
+import time
+import logging
+forecast_period=12
+# Set up logging to capture errors and progress
+logging.basicConfig(filename='sarima_errors.log', filemode='w', level=logging.ERROR)
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+# Apply first differences
+df=table_hc.copy()
+data=table_hc.copy()
+
+
+#df=table_hc.copy()
+#data=table_hc.copy()
+
+
+time_windows0 = [(pd.Timestamp('2015-01-01'), pd.Timestamp('2024-11-30'),"tw_01"),
+                (pd.Timestamp('2018-01-01'), pd.Timestamp('2024-11-30'),"tw_02"),
+                (pd.Timestamp('2020-01-01'), pd.Timestamp('2024-11-30'),"tw_03"),
+               (pd.Timestamp('2022-01-01'), pd.Timestamp('2024-11-30'),"tw_04"),
+               
+               ]
+
+time_windows=time_windows0
+
+#df_diff.to_clipboard()
+# Set up logging to capture errors and progress
+
+# Check for NaNs in the data and stop the process if there are any
+#if data.isnull().values.any():
+#    raise ValueError("Data contains NaNs. Please clean the data and try again.")
+
+# Apply first differencing to each component to make the series stationary
+df_diff = data.diff().dropna()
+
+# Initialize DataFrames to store results
+sarima_results = pd.DataFrame(columns=['Best_SARIMA_Params', 'RMSE'])
+forecast_results = pd.DataFrame()
+
+
+
+
+
+# Function to run SARIMA model and save results
+# Function to run SARIMA model and save results
+
+# Function to run SARIMA model and save results
+def run_sarima(column, time_windows0, df_diff):
+    component_name = column
+    for (start, end,tw_label) in time_windows0:
+        print(component_name)
+        time_window = f"{start.strftime('%Y-%m-%d')}_to_{end.strftime('%Y-%m-%d')}"
+        tw_label_l=tw_label
+        min_rmse = float("inf")
+        best_param1 = None
+        
+        # Filter the data for the specific time window
+        filtered_df = df_diff.loc[start:end, column]
+
+        # Check for NaNs in the filtered data
+        if filtered_df.isnull().values.any():
+            logging.error(f"Component {column} contains NaNs for time window {time_window}. Skipping this time window.")
+            continue
+
+        # Split data into training and test sets
+        train = filtered_df[:-12]
+        test = filtered_df[-12:]
+        
+        # Hyperparameter tuning using auto_arima
+        try:
+            model = auto_arima(train, seasonal=True, m=12, trace=True, stepwise=True, error_action='ignore', suppress_warnings=True)
+            best_param1 = model.get_params()
+            pred = model.predict(n_periods=12)
+            rmse = np.sqrt(mean_squared_error(test, pred))
+            
+            if rmse < min_rmse:
+                min_rmse = rmse
+                best_param1 = model.get_params()
+
+            sarima_results.loc[f"{component_name}_{tw_label_l}"] = [best_param1, min_rmse]
+
+
+            complete_data = df_diff.loc[start:end, column]
+            model = auto_arima(complete_data, seasonal=True, m=12, trace=True, stepwise=True, **best_param1)
+            forecast = model.predict(n_periods=forecast_period)
+            forecast_results[f"{component_name}_{tw_label_l}"] = forecast
+            #forecast_results.to_csv('forecast_results.csv')
+            #forecast_results.to_parquet('forecast_results.parquet')
+        
+        except Exception as e:
+            logging.error(f"Error in component {column} for time window {time_window}: {e}")
+            continue
+     
+
+def main():
+    # Measure total start time
+    total_start_time = time.time()
+
+    # Measure time for hyperparameter tuning and forecasting
+    tuning_start_time = time.time()
+
+    # Run models sequentially for each component
+    for column in df_diff.columns:
+        component_start_time = time.time()
+        try:
+            logger.info(f"Processing component: {column}")
+            print(f"Processing component: {column}")
+            run_sarima(column, time_windows0, df_diff)
+        except Exception as e:
+            logger.error(f'{column} generated an exception: {e}')
+        component_end_time = time.time()
+        print(f"Time taken for component {column}: {component_end_time - component_start_time} seconds")
+
+    # Measure time for hyperparameter tuning and forecasting
+    tuning_end_time = time.time()
+    print(f'Time taken for hyperparameter tuning and forecasting: {tuning_end_time - tuning_start_time} seconds')
+
+
+    
+    sarima_model001_results=sarima_results.copy()
+    sarima_results.to_csv('sarima_model001_results.csv')
+    sarima_results.to_csv('sarima_model001_results_bu.csv')
+    sarima_results.to_parquet('sarima_model001_results.parquet')
+    sarima_results.to_parquet('sarima_model001_results_bu.parquet')
+
+    sarima_model001_forecast_results=forecast_results.copy()
+    forecast_results.to_csv('sarima_model001_forecast_results.csv')
+    forecast_results.to_csv('sarima_model001_forecast_results_bu.csv')
+    forecast_results.to_parquet('sarima_model001_forecast_results.parquet')
+    forecast_results.to_parquet('sarima_model001_forecast_results_bu.parquet')
+    
+
+    total_end_time = time.time()
+    print(f'Total execution time: {total_end_time - total_start_time} seconds')
+
+if __name__ == "__main__":
+    main()
+
+#sarima_results = pd.DataFrame(columns=['Best_SARIMA_Params', 'RMSE'])
+#forecast_results = pd.DataFrame()
+
+#print(sarima_results)
+
+#print(forecast_results)
+
+model = auto_arima(complete_data, seasonal=True, m=12, trace=True, stepwise=False, **best_param)
+            
+
+#forecast_results.to_clipboard()
+
+
+
+(1, 0, 1, 1, 0, 1)  
+
+(1, 0, 1, 1, 0, 1)  
+
+### 001_data sarima version 2  autorarima extensive<a id="title_page"></a
+
+
+# Initialize DataFrames to store results
+sarima_results = pd.DataFrame(columns=['Best_SARIMA_Params', 'RMSE'])
+forecast_results = pd.DataFrame()
+
+# Function to run SARIMA model and save results
+def run_sarima(column, time_windows0, df_diff):
+    component_name = column
+    for (start, end,tw_label) in time_windows0:
+        print(component_name)
+        time_window = f"{start.strftime('%Y-%m-%d')}_to_{end.strftime('%Y-%m-%d')}"
+        tw_label_l=tw_label
+        min_rmse = float("inf")
+        best_param1 = None
+        
+        # Filter the data for the specific time window
+        filtered_df = df_diff.loc[start:end, column]
+
+        # Check for NaNs in the filtered data
+        if filtered_df.isnull().values.any():
+            logging.error(f"Component {column} contains NaNs for time window {time_window}. Skipping this time window.")
+            continue
+
+        # Split data into training and test sets
+        train = filtered_df[:-12]
+        test = filtered_df[-12:]
+        
+        # Hyperparameter tuning using auto_arima
+        try:
+            model = auto_arima(train, seasonal=True, m=12, trace=True, stepwise=False, error_action='ignore', suppress_warnings=True)
+            best_param1 = model.get_params()
+            pred = model.predict(n_periods=12)
+            rmse = np.sqrt(mean_squared_error(test, pred))
+            
+            if rmse < min_rmse:
+                min_rmse = rmse
+                best_param1 = model.get_params()
+
+            sarima_results.loc[f"{component_name}_{tw_label_l}"] = [best_param1, min_rmse]
+
+
+            complete_data = df_diff.loc[start:end, column]
+            model = auto_arima(complete_data, seasonal=True, m=12, trace=True, stepwise=False, **best_param1)
+            forecast = model.predict(n_periods=forecast_period)
+            forecast_results[f"{component_name}_{tw_label_l}"] = forecast
+            #forecast_results.to_csv('forecast_results.csv')
+            #forecast_results.to_parquet('forecast_results.parquet')
+        
+        except Exception as e:
+            logging.error(f"Error in component {column} for time window {time_window}: {e}")
+            continue
+
+
+
+def main():
+    # Measure total start time
+    total_start_time = time.time()
+
+    # Measure time for hyperparameter tuning and forecasting
+    tuning_start_time = time.time()
+
+    # Run models sequentially for each component
+    for column in df_diff.columns:
+        component_start_time = time.time()
+        try:
+            logger.info(f"Processing component: {column}")
+            print(f"Processing component: {column}")
+            run_sarima(column, time_windows0, df_diff)
+        except Exception as e:
+            logger.error(f'{column} generated an exception: {e}')
+        component_end_time = time.time()
+        print(f"Time taken for component {column}: {component_end_time - component_start_time} seconds")
+
+    # Measure time for hyperparameter tuning and forecasting
+    tuning_end_time = time.time()
+    print(f'Time taken for hyperparameter tuning and forecasting: {tuning_end_time - tuning_start_time} seconds')
+
+
+    
+
+    sarima_results.to_csv('sarima_model002_results.csv')
+    sarima_results.to_csv('sarima_model002_results_bu.csv')
+    sarima_results.to_parquet('sarima_model002_results.parquet')
+    sarima_results.to_parquet('sarima_model002_results_bu.parquet')
+
+    
+    forecast_results.to_csv('sarima_model002_forecast_results.csv')
+    forecast_results.to_csv('sarima_model002_forecast_results_bu.csv')
+    forecast_results.to_parquet('sarima_model002_forecast_results.parquet')
+    forecast_results.to_parquet('sarima_model002_forecast_results_bu.parquet')
+
+    total_end_time = time.time()
+    print(f'Total execution time: {total_end_time - total_start_time} seconds')
+
+if __name__ == "__main__":
+    main()
+
+
+
+   
+   # sarima_results.to_parquet('sarima_model002_results_bu.parquet')
+
+    
+   # forecast_results.to_csv('sarima_model002_forecast_results.csv')
+   # forecast_results.to_csv('sarima_model002_forecast_results_bu.csv')
+   # forecast_results.to_parquet('sarima_model002_forecast_results.parquet')
+    #forecast_results.to_parquet('sarima_model002_forecast_results_bu.parquet')
+
+
+#sarima_results.columns= sarima_results.columns.astype(str)
+#sarima_results.to_parquet('sarima_model002_results.parquet')
+
+print(sarima_results.index)
+
+
+
+
+
+
+
+
+
+### 001_data sarima version 3 gridsearch cv <a id="title_page"></a
+
+
+from statsmodels.tsa.statespace.sarimax import SARIMAX
+from sklearn.metrics import mean_squared_error
+from itertools import product
+import concurrent.futures
+import time
+import logging
+
+
+import itertools
+
+
+df=table_hc.copy()
+#df=table_hc.copy()
+#data=table_hc.copy()
+
+#data.index = data.index.to_period('M')
+
+
+
+
+time_windows0 = [(pd.Timestamp('2015-01-01'), pd.Timestamp('2024-11-30'),"tw_01"),
+                (pd.Timestamp('2018-01-01'), pd.Timestamp('2024-11-30'),"tw_02"),
+                (pd.Timestamp('2020-01-01'), pd.Timestamp('2024-11-30'),"tw_03"),
+               (pd.Timestamp('2022-01-01'), pd.Timestamp('2024-11-30'),"tw_04"),
+               
+               ]
+
+
+
+time_windows0 = [(pd.Timestamp('2015-01-01'), pd.Timestamp('2024-11-30')),
+                    (pd.Timestamp('2018-01-01'), pd.Timestamp('2024-11-30')),
+                    (pd.Timestamp('2020-01-01'), pd.Timestamp('2024-11-30'))]
+time_windows=time_windows0
+
+
+
+
+
+
+
+def forecast_inflation_components(df, time_windows):
+    """
+    Forecasts inflation components using SARIMA with grid search, saves results,
+    and handles errors.
+    """
+
+    results_a = pd.DataFrame(columns=['Best_Params', 'RMSE'])
+    results_b = pd.DataFrame()
+
+    start_time = time.time()
+
+    for component in df.columns:
+        print(f"Starting component: {component}")
+        print(f"{component}")
+        component_start_time = time.time()
+
+        try:
+            #if df[component].isna().any():
+            #    raise ValueError(f"NaNs found in component {component}. Skipping.")
+
+            data = df[component].diff().dropna()
+
+            for i, (start_date, end_date) in enumerate(time_windows):
+                tw_start_time = time.time()
+                print(f"Starting time window {i+1} for {component}")
+                print(f"Starting time window {start_date} {end_date}")
+                try:
+                    train = data.loc[start_date:end_date - pd.DateOffset(months=12)]
+                    test = data.loc[end_date - pd.DateOffset(months=11):end_date]
+
+                    # Grid search for SARIMA parameters
+                    p_values = range(0, 3)
+                    d_values = range(0, 2)
+                    q_values = range(0, 3)
+                    P_values = range(0, 2)
+                    D_values = range(0, 1)
+                    Q_values = range(0, 2)
+                    m = 12  # Monthly data
+
+                    best_rmse = float('inf')
+                    best_params = None
+
+                    param_grid = list(itertools.product(p_values, d_values, q_values, P_values, D_values, Q_values))
+
+                    for params in param_grid:
+                        try:
+                            model = SARIMAX(train, order=(params[0], params[1], params[2]),
+                                            seasonal_order=(params[3], params[4], params[5], m),
+                                            enforce_stationarity=False,
+                                            enforce_invertibility=False)
+                            model_fit = model.fit(disp=False)
+                            predictions = model_fit.forecast(len(test))
+                            rmse = np.sqrt(mean_squared_error(test, predictions))
+
+                            if rmse < best_rmse:
+                                best_rmse = rmse
+                                best_params = params
+                        except (ValueError, np.linalg.LinAlgError) as e:
+                            print(f"Error during model fitting: {e}. Skipping combination {params}")
+                            continue
+
+                    if best_params is None:
+                        raise ValueError(f"No suitable SARIMA model found for {component} in time window {i+1}")
+
+
+                    # Refit with complete data and forecast 12 months
+                    complete_data = df[component].diff().dropna()
+                    refined_model = SARIMAX(complete_data.loc[start_date:end_date], order=(best_params[0], best_params[1], best_params[2]),
+                                            seasonal_order=(best_params[3], best_params[4], best_params[5], m),
+                                            enforce_stationarity=False,
+                                            enforce_invertibility=False)
+                    refined_model_fit = refined_model.fit(disp=False)
+                    forecast = refined_model_fit.forecast(12)
+
+                    # Save results
+                    index_name = f"{component}_TW{i+1}"
+                    results_a.loc[index_name] = [best_params, best_rmse]
+                    results_b[index_name] = forecast.values
+
+                    
+                    time.sleep(1) # small pause
+
+                    tw_end_time = time.time()
+                    print(f"Finished time window {i+1} for {component} in {tw_end_time - tw_start_time:.2f} seconds")
+
+                except Exception as e:
+                    print(f"Error in time window {i+1} of {component}: {e}")
+                    continue
+        except ValueError as e:
+            print(e)
+            continue
+        except Exception as e:
+            print(f"Error during component processing: {e}")
+            continue
+
+        component_end_time = time.time()
+        print(f"Finished component {component} in {component_end_time - component_start_time:.2f} seconds")
+
+    end_time = time.time()
+    print(f"Total execution time: {end_time - start_time:.2f} seconds")
+    return results_a, results_b
+
+
+
+
+
+if __name__ == "__main__":
+    # Sample DataFrame (replace with your actual data)
+    
+
+    
+    results_a, results_b = forecast_inflation_components(df, time_windows0)
+
+
+    # Save dataframes after each component and time window
+    results_a.to_csv("results_a.csv")
+    results_a.to_parquet("results_a.parquet")
+    results_a.to_pickle("results_a.pkl")
+
+    results_b.to_csv("results_b.csv")
+    results_b.to_parquet("results_b.parquet")
+    results_b.to_pickle("results_b.pkl")
+
+    #print("Results A:\n", results_a)
+    #print("\nResults B:\n", results_b)
+
+print(results_a)
+
+print(results_b)
+
+### 001_data sarima version 4 random search   <a id="title_page"></a
+
+
+
+import random
+
+
+
+def forecast_inflation_components_random_search(df, time_windows, random_trials=50):
+    """
+    Forecasts inflation components using SARIMA with random search, saves results,
+    and handles errors.
+    """
+
+    results_a = pd.DataFrame(columns=['Best_Params', 'RMSE'])
+    results_b = pd.DataFrame()
+
+    start_time = time.time()
+
+    for component in df.columns:
+        print(f"Starting component: {component}")
+        component_start_time = time.time()
+
+        try:
+            data = df[component].diff().dropna()
+
+            for i, (start_date, end_date) in enumerate(time_windows):
+                tw_start_time = time.time()
+                print(f"Starting time window {i+1} for {component} ({start_date} to {end_date})")
+                try:
+                    train = data.loc[start_date:end_date - pd.DateOffset(months=12)]
+                    test = data.loc[end_date - pd.DateOffset(months=11):end_date]
+
+                    # Define possible parameter ranges
+                    p_values = range(0, 3)
+                    d_values = range(0, 2)
+                    q_values = range(0, 3)
+                    P_values = range(0, 2)
+                    D_values = range(0, 1)
+                    Q_values = range(0, 2)
+                    m = 12  # Monthly data
+
+                    # Create parameter grid and randomly sample combinations
+                    param_grid = list(itertools.product(p_values, d_values, q_values, P_values, D_values, Q_values))
+                    sampled_params = random.sample(param_grid, min(random_trials, len(param_grid)))
+
+                    best_rmse = float('inf')
+                    best_params = None
+
+                    for params in sampled_params:
+                        try:
+                            model = SARIMAX(train, order=(params[0], params[1], params[2]),
+                                            seasonal_order=(params[3], params[4], params[5], m),
+                                            enforce_stationarity=False,
+                                            enforce_invertibility=False)
+                            model_fit = model.fit(disp=False)
+                            predictions = model_fit.forecast(len(test))
+                            rmse = np.sqrt(mean_squared_error(test, predictions))
+
+                            if rmse < best_rmse:
+                                best_rmse = rmse
+                                best_params = params
+                        except (ValueError, np.linalg.LinAlgError) as e:
+                            print(f"Error during model fitting: {e}. Skipping combination {params}")
+                            continue
+
+                    if best_params is None:
+                        raise ValueError(f"No suitable SARIMA model found for {component} in time window {i+1}")
+
+                    # Refit with complete data and forecast 12 months
+                    complete_data = df[component].diff().dropna()
+                    refined_model = SARIMAX(complete_data.loc[start_date:end_date], 
+                                            order=(best_params[0], best_params[1], best_params[2]),
+                                            seasonal_order=(best_params[3], best_params[4], best_params[5], m),
+                                            enforce_stationarity=False,
+                                            enforce_invertibility=False)
+                    refined_model_fit = refined_model.fit(disp=False)
+                    forecast = refined_model_fit.forecast(12)
+
+                    # Save results
+                    index_name = f"{component}_TW{i+1}"
+                    results_a.loc[index_name] = [best_params, best_rmse]
+                    results_b[index_name] = forecast.values
+
+                    time.sleep(1)  # Small pause to ensure results are saved
+
+                    tw_end_time = time.time()
+                    print(f"Finished time window {i+1} for {component} in {tw_end_time - tw_start_time:.2f} seconds")
+
+                except Exception as e:
+                    print(f"Error in time window {i+1} of {component}: {e}")
+                    continue
+        except ValueError as e:
+            print(e)
+            continue
+        except Exception as e:
+            print(f"Error during component processing: {e}")
+            continue
+
+        component_end_time = time.time()
+        print(f"Finished component {component} in {component_end_time - component_start_time:.2f} seconds")
+
+    end_time = time.time()
+    print(f"Total execution time: {end_time - start_time:.2f} seconds")
+    return results_a, results_b
+
+
+
+
+
+if __name__ == "__main__":
+    # Sample DataFrame (replace with your actual data)
+    
+
+    
+    results_a, results_b = forecast_inflation_components(df, time_windows0)
+
+
+    # Save dataframes after each component and time window
+    results_a.to_csv("results_a.csv")
+    results_a.to_parquet("results_a.parquet")
+    results_a.to_pickle("results_a.pkl")
+
+    results_b.to_csv("results_b.csv")
+    results_b.to_parquet("results_b.parquet")
+    results_b.to_pickle("results_b.pkl")
+
+    #print("Results A:\n", results_a)
+    #print("\nResults B:\n", results_b)
+
+
+
+
+
+
+
+
+
+
+
+#aggregate all teh restusl
+## apply reule slke filtering for eeducaiton s, 
+#reindex all teh resutls 
+#calcalte the rMSE of last 12 months
+#COmparte models 
+
+
+
+### Bayesian Optimization:   <a id="title_page"></a
+
+### 001_bottom  <a id="title_page"></a
